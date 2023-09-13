@@ -16,14 +16,20 @@ export const useAuthStore = defineStore("authStore", {
   actions: {
     async login(username, password) {
       try {
-        const response = await axios.post("/login", {
-          username: username,
-          password: password,
-        });
+        const response = await axios.post(
+          "https://landtick-cuy.fly.dev/api/v1/login",
+          {
+            username: username,
+            password: password,
+          }
+        );
 
         if (response.status === 200) {
           this.user = response.data.data;
           this.isLogin = true;
+          this.token = response.data.data.user.token;
+          localStorage.setItem("token", this.token);
+          console.log(response);
         }
       } catch (error) {
         console.log(error);
